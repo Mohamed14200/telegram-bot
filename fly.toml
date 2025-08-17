@@ -1,12 +1,13 @@
-app = "telegram-bot-dz"
+app = "telegram-bot-123"  
+
+primary_region = "fra"  # تختار أقرب سيرفر لك (fra = فرانكفورت)
 
 [build]
   dockerfile = "Dockerfile"
 
-[[services]]
-  internal_port = 8080
-  processes = ["app"]
+[env]
+  PYTHONUNBUFFERED = "1"
 
-  [[services.ports]]
-    handlers = []
-    port = 8080
+[experimental]
+  allowed_public_ports = []
+  auto_rollback = true

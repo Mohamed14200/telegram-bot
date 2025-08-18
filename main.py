@@ -1,6 +1,9 @@
 from telethon import TelegramClient, events
 import re
 import asyncio
+import nest_asyncio
+
+nest_asyncio.apply()
 
 # ===== بيانات تسجيل الدخول =====
 api_id = 24700178
@@ -211,5 +214,5 @@ async def main():
     client.loop.create_task(print_heartbeat())
     await client.run_until_disconnected()
 
-with client:
-    client.loop.run_until_complete(main())
+# تشغيل في Google Colab
+asyncio.get_event_loop().run_until_complete(main())

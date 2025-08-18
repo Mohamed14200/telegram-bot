@@ -1,14 +1,16 @@
 from telethon import TelegramClient, events
+from telethon.sessions import StringSession
 import re
 import asyncio
-import nest_asyncio
-
-nest_asyncio.apply()
 
 # ===== بيانات تسجيل الدخول =====
 api_id = 24700178
 api_hash = '53439b01dc0a48298d1d755abc75436d'
-phone_number = '+213794897379'
+
+# الجلسة مباشرة داخل الكود
+string_session = "1BJWap1sBu2nKPDBi0-jg-rwelpmMeeTCNrMbseu9EA1jNdaJUio_-Rb6CexEcVN-oVk_JxDLJZ16dkS0i74bp8VCKUtGzLvisEnCQKMzVpU6fcmDV4U1cGtBaoo-nOFQMGAcXAyEJb24BQIwsRL4rzLlGiBursKWERPSGAXvGlu4cRtMw4B_LsQ0OQKnKOvaVqAX193V39wUE98SWOtAKPKQpfQyVYe9z2RHbbfRyRDH-FyCvRwnMhAX3ZmfZSz0Kd6MMESEKm2n3WJppeuOCmHczndaqKGhsfr3yHqa2XeaC3wkpSwuCwsC-c16yAj64kzERSOmU-Kr5_J_a1J6es88aJ4Tqlk="
+
+client = TelegramClient(StringSession(string_session), api_id, api_hash)
 
 # ===== إعدادات القنوات =====
 source_channels = [
@@ -35,8 +37,6 @@ https://t.me/best4uoffers
 """
 
 bot_username = 'Aliexpress_4ubot'
-
-client = TelegramClient('session_name', api_id, api_hash)
 
 # ===== تعبيرات منتظمة =====
 ALI_CLICK_FULL_RE = re.compile(r'https?://s\.click\.aliexpress\.com/e/[^\s]+', re.IGNORECASE)
@@ -183,14 +183,12 @@ async def bot_response(event):
         modified_text = f"{final_intro}\n\n{chosen_link}\n\n{extra_text}"
 
         try:
-            # نشر الرسالة المعدلة في قناتك
             sent_msg = await client.send_message(my_channel, modified_text, file=data["media"])
         except Exception as e:
             print(f"خطأ في النشر إلى قناتك: {e}")
             del pending_requests[msg_id]
             return
 
-        # فوروورد من قناتك للقنوات الصغيرة
         for ch in forward_channels:
             try:
                 await client.forward_messages(ch, sent_msg)
@@ -209,10 +207,13 @@ async def print_heartbeat():
 
 # ===== تشغيل البوت =====
 async def main():
-    await client.start(phone_number)
+    await client.connect()
+    if not await client.is_user_authorized():
+        raise SystemExit("🚫 الجلسة غير مُخوّلة. أنشئ StringSession جديد.")
     print("🚀 the bot starts...")
     client.loop.create_task(print_heartbeat())
     await client.run_until_disconnected()
 
-# تشغيل في Google Colab
-asyncio.get_event_loop().run_until_complete(main())
+with client:
+    client.loop.run_until_complete(main())
+

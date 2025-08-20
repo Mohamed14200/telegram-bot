@@ -1,4 +1,4 @@
-app = "telegram-bot-123"  
+app = "telegram-bot-6lchrq"  
 
 primary_region = "fra"  # تختار أقرب سيرفر لك (fra = فرانكفورت)
 
@@ -11,3 +11,4 @@ primary_region = "fra"  # تختار أقرب سيرفر لك (fra = فرانك�
 [experimental]
   allowed_public_ports = []
   auto_rollback = true
+

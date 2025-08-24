@@ -25,7 +25,7 @@ source_channels = [
 ]
 
 my_channel = 'best4uoffers'
-forward_channels = ['ziamoamed', 'aligroupedz', 'AliexpressOffers99']
+forward_channels = ['ziamoamed', 'aligroupedz', 'buyfrom4aliexpress','AliexpressOffers99']
 
 extra_text = """
 لاتنسوا استخدام بوت التخفيضات
@@ -215,3 +215,4 @@ async def main():
 
 with client:
     client.loop.run_until_complete(main())
+
